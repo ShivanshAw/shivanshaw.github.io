@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shivansh Awasthi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    /* ---------- Base ---------- */
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #0e0e0e;
+      color: #f5f5f5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ---------- Sticky Header (Hugo-ish) ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 22px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e6e6e6;
+      opacity: 0.9;
+    }
+
+    .nav a:hover { opacity: 1; }
+
+    /* ---------- Sections ---------- */
+    section {
+      padding: 80px 60px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 40px;
+      font-weight: 500;
+      margin: 0 0 8px 0;
+      text-align: center;
+    }
+
+    .section-subtitle {
+      margin: 0 0 60px 0;
+      text-align: center;
+      color: #c9c9c9;
+      font-size: 14px;
+    }
+
+    .band {
+      background: #111;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ---------- Hero (no video yet) ---------- */
+    .hero {
+      min-height: 70vh;
+      display: flex;
+      align-items: flex-end;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 600;
+      margin: 0 0 14px 0;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 780px;
+      font-size: 20px;
+      line-height: 1.6;
+      color: #cfcfcf;
+    }
+
+    /* ---------- Project Tiles (for later grids) ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .tile {
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+
+    .tile:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .tile-media {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: #0b0b0b;
+    }
+
+    .tile-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease, filter 0.6s ease;
+    }
+
+    .tile:hover .tile-media img {
+      transform: scale(1.06);
+      filter: brightness(1.12);
+    }
+
+    .tile-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 18px;
+    }
+
+    .tile:hover .tile-overlay { opacity: 1; }
+
+    .tile-overlay .overlay-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .tile-body {
+      padding: 18px;
+    }
+
+    .tile-body h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .tile-body p {
+      margin: 0;
+      color: #bdbdbd;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ---------- About text ---------- */
+    .about-text {
+      max-width: 900px;
+      margin: 0 auto;
+      color: #d0d0d0;
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1000px) {
+      section { padding: 70px 30px; }
+      .hero h1 { font-size: 46px; }
+      .grid { grid-template-columns: 1fr; }
+      .topbar-inner { align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sticky Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Shivansh Awasthi</div>
+
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#highlighted">Highlighted Project</a>
+        <a href="#professional">Professional Projects</a>
+        <a href="#personal">Personal Work</a>
+        <a href="Shivansh_Resume_2026.pdf" target="_blank" rel="noopener">Resume</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>Shivansh Awasthi</h1>
+      <p>
+        Designer, developer, and educator working across interactive media,
+        games, AI systems, and immersive experiences.
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="band" id="about">
+    <div class="container">
+      <h2 class="section-title">About</h2>
+      <p class="section-subtitle">A short overview of what I do and what I build.</p>
+
+      <div class="about-text">
+        I work at the intersection of interactive media, game development, and emerging AI systems.
+        My practice spans creative development, technical design, and teaching, with a focus on
+        building experiences that feel immersive, responsive, and meaningful.
+      </div>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTED PROJECT -->
+  <section id="highlighted">
+  <div class="container">
+
+    <h2>Highlighted Project</h2>
+
+    <!-- THIS is the Unsent tile -->
+    <a class="project-card" href="projects/unsent.html" target="_blank">
+
+      <img src="images/unsent.jpg" alt="Unsent">
+
+      <div class="project-overlay">
+        <h3>Unsent</h3>
+
+        <div class="project-tags">
+          <span class="tag">Unreal Engine</span>
+          <span class="tag">Blueprints</span>
+          <span class="tag">C++</span>
+          <span class="tag">University / Studio</span>
+        </div>
+
+        <p class="project-desc">
+          A whimsical 3D platformer where you play as Valentine, a heart-headed
+          postman delivering letters that were never sent.
+        </p>
+
+        <div class="project-highlights">
+          <p><strong>My contributions:</strong></p>
+          <ul>
+            <li>Enemy AI & Behavior Trees</li>
+            <li>Dialogue & interaction systems</li>
+            <li>UI & journal systems</li>
+          </ul>
+        </div>
+      </div>
+
+    </a>
+
+  </div>
+</section>
+
+
+  <!-- PROFESSIONAL PROJECTS -->
+  <section class="band" id="professional">
+    <div class="container">
+      <h2 class="section-title">Professional Projects</h2>
+      <p class="section-subtitle">Click the tiles to learn more about each project.</p>
+
+      <div class="grid">
+        <!-- Placeholder tiles (we’ll replace with your real projects next) -->
+        <a class="tile" href="#">
+          <div class="tile-media">
+            <img src="images/unsent.jpg" alt="Project placeholder">
+            <div class="tile-overlay"><div class="overlay-title">Project Name</div></div>
+          </div>
+          <div class="tile-body">
+            <h3>Project Name</h3>
+            <p>Short description. (We’ll replace this with your real content.)</p>
+          </div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="tile-media">
+            <img src="images/unsent.jpg" alt="Project placeholder">
+            <div class="tile-overlay"><div class="overlay-title">Project Name</div></div>
+          </div>
+          <div class="tile-body">
+            <h3>Project Name</h3>
+            <p>Short description. (We’ll replace this with your real content.)</p>
+          </div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="tile-media">
+            <img src="images/unsent.jpg" alt="Project placeholder">
+            <div class="tile-overlay"><div class="overlay-title">Project Name</div></div>
+          </div>
+          <div class="tile-body">
+            <h3>Project Name</h3>
+            <p>Short description. (We’ll replace this with your real content.)</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONAL WORK -->
+  <section id="personal">
+    <div class="container">
+      <h2 class="section-title">Personal Work</h2>
+      <p class="section-subtitle">Click the tiles to learn more about each project.</p>
+
+      <div class="grid">
+        <!-- Placeholder tiles (we’ll replace with your real projects next) -->
+        <a class="tile" href="#">
+          <div class="tile-media">
+            <img src="images/unsent.jpg" alt="Project placeholder">
+            <div class="tile-overlay"><div class="overlay-title">Project Name</div></div>
+          </div>
+          <div class="tile-body">
+            <h3>Project Name</h3>
+            <p>Short description. (We’ll replace this with your real content.)</p>
+          </div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="tile-media">
+            <img src="images/unsent.jpg" alt="Project placeholder">
+            <div class="tile-overlay"><div class="overlay-title">Project Name</div></div>
+          </div>
+          <div class="tile-body">
+            <h3>Project Name</h3>
+            <p>Short description. (We’ll replace this with your real content.)</p>
+          </div>
+        </a>
+
+        <a class="tile" href="#">
+          <div class="tile-media">
+            <img src="images/unsent.jpg" alt="Project placeholder">
+            <div class="tile-overlay"><div class="overlay-title">Project Name</div></div>
+          </div>
+          <div class="tile-body">
+            <h3>Project Name</h3>
+            <p>Short description. (We’ll replace this with your real content.)</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="band" id="contact">
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-subtitle">If you have questions or want to collaborate, reach out.</p>
+
+      <div class="about-text" style="text-align:center;">
+        <p style="margin:0 0 8px 0;">Email: <a href="mailto:shivansh1499@example.com">shivansh1499@example.com</a></p>
+        <p style="margin:0;">LinkedIn / GitHub / Other links (we’ll add next)</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

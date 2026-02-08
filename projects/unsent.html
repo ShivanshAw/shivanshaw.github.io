@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unsent — Shivansh Awasthi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --panel: #141414;
+      --panel-soft: rgba(255,255,255,0.06);
+      --text: #f5f5f5;
+      --muted: #cfcfcf;
+      --accent: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ---------- Sticky Header ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .nav a:hover { opacity: 1; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      background: url("../images/unsent.jpg") center / cover no-repeat;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* Swap the above background for a <video> later with minimal change */
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center,
+          rgba(0,0,0,0.25) 0%,
+          rgba(0,0,0,0.75) 70%),
+        linear-gradient(to top,
+          rgba(0,0,0,0.9),
+          rgba(0,0,0,0.2));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      padding: 90px 24px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+    }
+
+    .hero p {
+      max-width: 720px;
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ---------- Sections ---------- */
+    section {
+      padding: 90px 24px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* ---------- Meta Panel ---------- */
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 60px;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 36px;
+      border-radius: 10px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .meta strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ---------- Content ---------- */
+    .content {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .content h2 {
+      font-size: 30px;
+      margin: 70px 0 18px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* ---------- Accordion ---------- */
+    .accordion {
+      margin-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      padding: 22px 6px;
+      font-size: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .accordion-header:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .accordion-icon {
+      font-size: 22px;
+      line-height: 1;
+      opacity: 0.8;
+      transition: transform 0.2s ease;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(45deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .accordion-inner {
+      padding: 0 6px 28px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ---------- Media Placeholder ---------- */
+    .media-placeholder {
+      margin-top: 50px;
+      aspect-ratio: 16 / 9;
+      background: rgba(255,255,255,0.05);
+      border: 1px dashed rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--muted);
+      border-radius: 8px;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 42px; }
+      .meta { grid-template-columns: 1fr; }
+      section { padding: 70px 20px; }
+      .hero-content { padding: 70px 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Shivansh Awasthi</div>
+      <nav class="nav">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#highlighted">Highlighted</a>
+        <a href="../index.html#professional">Professional</a>
+        <a href="../index.html#personal">Personal</a>
+        <a href="../Shivansh_Resume_2026.pdf" target="_blank" rel="noopener">Resume</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Unsent</h1>
+      <p>
+        A whimsical 3D platformer where you play as Valentine,
+        a heart-headed postman delivering letters that were never sent.
+      </p>
+    </div>
+  </section>
+
+  <!-- Meta -->
+  <section>
+    <div class="container meta">
+      <div><strong>Project Type:</strong> University project → Studio project</div>
+      <div><strong>Year:</strong> 2024–2025</div>
+      <div><strong>Role:</strong> UI, Enemy AI, Dialogue & Interaction Systems</div>
+      <div><strong>Tech:</strong> Unreal Engine, Blueprints, C++, Behavior Trees</div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section>
+    <div class="container content">
+      <h2>Overview</h2>
+      <p>
+        Unsent is a whimsical 3D platformer inspired by <em>Psychonauts 2</em>
+        and <em>Mario</em>, set in a playful world filled with characters,
+        stories, and forgotten emotions.
+      </p>
+
+      <p>
+        You play as Valentine, a heart-headed postman working in the
+        Unsentiment Department. Your job is to deliver letters that were never
+        delivered, uncovering personal stories as you explore this expressive,
+        story-driven world.
+      </p>
+
+      <p>
+        Players meet strange and memorable characters, collect stamps,
+        and fill out a personal journal while navigating platforming challenges
+        and narrative interactions.
+      </p>
+
+      <h2>Technical Contributions</h2>
+
+      <div class="accordion">
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Enemy AI & Behavior Trees
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              Designed and implemented enemy behaviors using Unreal Engine
+              Behavior Trees, supporting modular state transitions, patrol logic,
+              and reactive combat behavior.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Dialogue & Interaction Systems
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              Built the dialogue and interaction framework from scratch,
+              enabling branching conversations, character responses,
+              and narrative-driven interactions throughout the world.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            User Interface Systems
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              Developed UI systems for the journal, stamp collection,
+              and player feedback, ensuring clarity and cohesion with
+              the game’s whimsical tone.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h2>Media</h2>
+      <div class="media-placeholder">
+        Trailer placeholder — looping video coming soon
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll(".accordion-header").forEach(button => {
+      button.addEventListener("click", () => {
+        const item = button.parentElement;
+        const content = item.querySelector(".accordion-content");
+
+        item.classList.toggle("open");
+
+        if (item.classList.contains("open")) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+          content.style.maxHeight = "0";
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
